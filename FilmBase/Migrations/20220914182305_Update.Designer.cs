@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmBase.Migrations
 {
     [DbContext(typeof(FilmsDbContext))]
-    [Migration("20220901124834_First")]
-    partial class First
+    [Migration("20220914182305_Update")]
+    partial class Update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,39 +25,53 @@ namespace FilmBase.Migrations
 
             modelBuilder.Entity("ActorFilm", b =>
                 {
-                    b.Property<string>("ActorsSurname")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ActorsId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("FilmsTitle")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FilmsId")
+                        .HasColumnType("int");
 
-                    b.HasKey("ActorsSurname", "FilmsTitle");
+                    b.HasKey("ActorsId", "FilmsId");
 
-                    b.HasIndex("FilmsTitle");
+                    b.HasIndex("FilmsId");
 
                     b.ToTable("ActorFilm");
                 });
 
             modelBuilder.Entity("FilmBase.Models.Actor", b =>
                 {
-                    b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Actors");
                 });
 
             modelBuilder.Entity("FilmBase.Models.Film", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasKey("Title");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Films");
                 });
@@ -66,13 +80,13 @@ namespace FilmBase.Migrations
                 {
                     b.HasOne("FilmBase.Models.Actor", null)
                         .WithMany()
-                        .HasForeignKey("ActorsSurname")
+                        .HasForeignKey("ActorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FilmBase.Models.Film", null)
                         .WithMany()
-                        .HasForeignKey("FilmsTitle")
+                        .HasForeignKey("FilmsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

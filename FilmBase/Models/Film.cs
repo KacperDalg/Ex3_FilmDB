@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FilmBase.Models
+namespace FilmBase.Models;
+public class Film
 {
-    public class Film
-    {
-        [Key]
-        public string Title { get; set; }
-        [Required]
-        public List<Actor> Actors { get; set; } = new List<Actor>();
-}
+    [Key]
+    public int Id { get; set; }
+    [Required]
+    public string Title { get; set; }
+    [Required]
+    public List<Actor> Actors { get; set; } = new List<Actor>();
 }
